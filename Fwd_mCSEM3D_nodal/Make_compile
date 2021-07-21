@@ -1,0 +1,52 @@
+#######################################################################
+# Makefile para a compilacao do programa Mcsem3D
+# Autor: Anderson Almeida
+#######################################################################
+
+# Se for usar o ifort
+FORTRAN = mpif90
+
+primvd=./font1D
+
+libspar = -lmkl_rt
+
+#--
+
+objetos = mod_var_glob.o mod_arrays_pds_cmplx.o Anderson.o filtros.o escolhadofiltro.o \
+dehx.o mod_arrays_SLU.o modulofinal_MQMP.o mod_fem3D.o mod_aux.o mod_mcsem3D.o mcsem3D.o
+
+mcsem3D.nod: $(objetos)
+
+mod_var_glob.o : mod_var_glob.f90
+	$(FORTRAN) -c mod_var_glob.f90
+mod_arrays_pds_cmplx.o : mod_arrays_pds_cmplx.f90
+	$(FORTRAN) -c mod_arrays_pds_cmplx.f90
+Anderson.o : Anderson.for
+	$(FORTRAN) -c Anderson.for
+filtros.o : $(primvd)/filtros.f90
+	$(FORTRAN) -c $(primvd)/filtros.f90
+escolhadofiltro.o : $(primvd)/escolhadofiltro.f90
+	$(FORTRAN) -c $(primvd)/escolhadofiltro.f90
+dehx.o : $(primvd)/dehx.f90
+	$(FORTRAN) -c $(primvd)/dehx.f90
+mod_arrays_SLU.o : mod_arrays_SLU.f90
+	$(FORTRAN) -c mod_arrays_SLU.f90
+modulofinal_MQMP.o : modulofinal_MQMP.f90
+	$(FORTRAN) -c modulofinal_MQMP.f90
+mod_fem3D.o : mod_fem3D.f90
+	$(FORTRAN) -c mod_fem3D.f90
+mod_aux.o : mod_aux.f90
+	$(FORTRAN) -c mod_aux.f90
+mod_mcsem3D.o : mod_mcsem3D.f90
+	$(FORTRAN) -c mod_mcsem3D.f90
+mcsem3D.o : mcsem3D.f90
+	$(FORTRAN) -c mcsem3D.f90
+
+mcsem3D.nod: $(objetos) 
+	$(FORTRAN) $(objetos) $(libspar) -o $@
+clean:
+	rm -f *.o *.mod mcsem3D.nod
+clean_primarios:
+	rm ./primarios/*.bin
+
+

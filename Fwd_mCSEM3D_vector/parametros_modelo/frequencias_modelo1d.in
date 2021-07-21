@@ -1,0 +1,10 @@
+1                          # Numero de Frequencias
+0.25
+
+2                          # Numero de camadas do modelo 1D.
+0.3 1.d0                   # Resistividades das camadas.
+1.d3                       # Espessuras das camadas ( A quantidade sempre e igual ao numero de camadas - 1 )
+
+1.d0                       # momento de dipolo da fonte.
+
+1                          # Predeterminar os campos primarios ( 1 = sim , 0 = nao )
